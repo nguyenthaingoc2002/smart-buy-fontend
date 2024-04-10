@@ -36,8 +36,8 @@ export default function ProductCard({product}) {
             <Typography variant="h3" sx={{fontSize: 16}} className='truncate-text'>
               {product.name}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {product.price}
+            <Typography style={{ marginTop: 5, fontSize: 15, fontWeight: "bold" }}>
+              {product.price.toLocaleString('vi-VN', {currency: 'VND', style: 'currency'})}
             </Typography>
           </CardContent>
         </Card>
