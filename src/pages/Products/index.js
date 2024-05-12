@@ -12,12 +12,13 @@ const Products = () => {
   const handleChangePagination = (event, value) => {
     setPage(value);
     fetchProducts(page);
+    window.scrollTo(0, 0);
   };
 
 
   React.useEffect(() => {
     fetchProducts(page);
-  }, [])
+  }, [listProducts])
 
   const fetchProducts = async (page) =>{
     const params = {

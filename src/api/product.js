@@ -26,3 +26,12 @@ export const searchProductAPI = async (params) => {
     console.log(error);
   }
 };
+
+export const getSimilarProductAPI = async (productId) => {
+  try {
+    const response = await axios.get(`/products/${productId}/similar`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
