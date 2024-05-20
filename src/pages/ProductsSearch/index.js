@@ -44,12 +44,12 @@ const ProductsSearch = () => {
         {`Kết quả tìm kiếm cho từ khóa '${keyword}'`}
       </Typography>
       <Grid container spacing={2} sx={{padding: 2}}>
-        {listProducts.length > 0 && listProducts?.map(product =>
+        {listProducts?.length > 0 && listProducts?.map(product =>
         <Grid item xs={2}>
           <ProductCard product = {product}/>
         </Grid>)}
       </Grid>
-      {listProducts.length === 0 &&
+      {listProducts?.length === 0 &&
         <Typography variant="h1" sx={{fontSize: 30, margin: 5}} className='truncate-text'>
           {"Không tìm thấy kết quả nào"}
       </Typography>}

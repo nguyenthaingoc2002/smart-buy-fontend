@@ -37,8 +37,8 @@ const Header = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-    <AppBar position="static">
+    <Box sx={{ flexGrow: 1, marginBottom: 5 }}>
+    <AppBar position="fixed" >
       <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
         <Typography
           variant="h6"

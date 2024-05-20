@@ -22,19 +22,19 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const [productDetailData, setProductDetailData] = React.useState(null);
   const [listSimilarProducts, setListSimilarProducts] = React.useState(null);
-  const [listSimilarProductsRender, setListSimilarProductsRender] = React.useState(null);
+  const [listSimilarProductsRender, setListSimilarProductsRender] =
+    React.useState(null);
   const params = useParams();
 
   const fetchProductDetail = async () => {
-    const response = await getProductAPI(params.id);
-    setProductDetailData(response.product);
-  };
+    const responseProduct = await getProductAPI(params.id);
+    setProductDetailData(responseProduct.product);
 
-  const fetchSimilarProduct = async () => {
-    const response = await getSimilarProductAPI(params.id);
-    console.log(response);
-    setListSimilarProducts(response.listProducts);
-    setListSimilarProductsRender(response.listProducts);
+    const responseSimilarProduct = await getSimilarProductAPI(
+      responseProduct.product?.id
+    );
+    setListSimilarProducts(responseSimilarProduct?.listProducts);
+    setListSimilarProductsRender(responseSimilarProduct?.listProducts);
   };
 
   const setLowToHigh = () => {
@@ -59,7 +59,9 @@ const ProductDetail = () => {
   };
 
   const filter_e_commerce = (name) => {
-    const filter_e_commerce = listSimilarProducts.filter((product) => product.e_commerce === name);
+    const filter_e_commerce = listSimilarProducts.filter(
+      (product) => product.e_commerce === name
+    );
     setListSimilarProductsRender([...filter_e_commerce]);
   };
 
@@ -69,7 +71,6 @@ const ProductDetail = () => {
 
   React.useEffect(() => {
     fetchProductDetail();
-    fetchSimilarProduct();
     window.scrollTo(0, 0);
   }, [params.id]);
 
@@ -81,7 +82,7 @@ const ProductDetail = () => {
         alignItems: "center",
         justifyContent: "center",
         gap: 4,
-        margin: 4,
+        margin: 10,
       }}
     >
       <Grid item xs={12} md={6} sx={{ width: "90%" }}>
@@ -90,8 +91,8 @@ const ProductDetail = () => {
             component="img"
             sx={{
               width: "40%",
-              height: "400px",
-              display: { xs: "none", sm: "block" },
+              height: "450px",
+              // display: { xs: "none", sm: "block" },
             }}
             image={productDetailData?.url_thumbnail}
             alt={"post.imageLabel"}
@@ -122,7 +123,7 @@ const ProductDetail = () => {
             <div>
               {(() => {
                 switch (productDetailData?.e_commerce) {
-                  case "Shoppe":
+                  case "Shopee":
                     return (
                       <img
                         width={100}
@@ -164,7 +165,11 @@ const ProductDetail = () => {
               })()}
             </div>
 
-            <Button target="_blank" variant="outlined" href="">
+            <Button
+              target="_blank"
+              variant="outlined"
+              href={productDetailData?.url_product}
+            >
               Đến nơi bán
             </Button>
           </CardContent>
@@ -222,7 +227,7 @@ const ProductDetail = () => {
               <option value="DEFAULT" disabled>
                 Nơi bán
               </option>
-              <option value="Shoppe">SHOPPE</option>
+              <option value="Shopee">SHOPPE</option>
               <option value="Tiki">TIKI</option>
               <option value="Lazada">LAZADA</option>
               <option value="Sendo">SENDO</option>
@@ -259,10 +264,56 @@ const ProductDetail = () => {
                 image={product.url_thumbnail}
                 alt={"post.imageLabel"}
               />
+
               <CardContent sx={{ flex: 1 }}>
                 <Typography component="h2" variant="h5">
                   {product?.name}
                 </Typography>
+
+                <div>
+                  {(() => {
+                    switch (product?.e_commerce) {
+                      case "Shopee":
+                        return (
+                          <img
+                            width={50}
+                            height={50}
+                            src={logo_shopee}
+                            alt="Logo"
+                          />
+                        );
+                      case "Lazada":
+                        return (
+                          <img
+                            width={50}
+                            height={50}
+                            src={logo_lazada}
+                            alt="Logo"
+                          />
+                        );
+                      case "Tiki":
+                        return (
+                          <img
+                            width={50}
+                            height={50}
+                            src={logo_tiki}
+                            alt="Logo"
+                          />
+                        );
+                      case "Sendo":
+                        return (
+                          <img
+                            width={50}
+                            height={50}
+                            src={logo_sendo}
+                            alt="Logo"
+                          />
+                        );
+                      default:
+                        return;
+                    }
+                  })()}
+                </div>
                 <Typography
                   style={{ marginTop: 5, fontSize: 15, fontWeight: "bold" }}
                 >
@@ -274,8 +325,10 @@ const ProductDetail = () => {
               </CardContent>
             </Card>
           </div>
+        ))}
 
-        )
+        {listSimilarProductsRender?.length === 0 && (
+          <p>Không có sản phẩm nào</p>
         )}
       </Grid>
     </Box>

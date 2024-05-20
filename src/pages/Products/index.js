@@ -1,11 +1,11 @@
 import React from "react";
 import ProductCard from "../../components/ProductCard";
 import { Box, Grid, Pagination } from "@mui/material";
-import { getAllProductAPI } from '../../api/product';
-import { ListProductsContext } from '../../App';
-import { useContext } from 'react';
+import { getAllProductAPI } from "../../api/product";
+import { ListProductsContext } from "../../App";
+import { useContext } from "react";
+import Typography from '@mui/material/Typography';
 const Products = () => {
-
   const { listProducts, setListProducts } = useContext(ListProductsContext);
   const [page, setPage] = React.useState(1);
   const [numberPage, setNumberPage] = React.useState(1);
@@ -15,34 +15,52 @@ const Products = () => {
     window.scrollTo(0, 0);
   };
 
-
   React.useEffect(() => {
     fetchProducts(page);
-  }, [listProducts])
+  }, [listProducts]);
 
-  const fetchProducts = async (page) =>{
+  const fetchProducts = async (page) => {
     const params = {
-      page: page
-    }
+      page: page,
+    };
     const response = await getAllProductAPI(params);
     console.log(response);
     if (response.success) {
-      console.log(response.allProducts);
-      setListProducts(response.allProducts)
-      setNumberPage(response.numberPage)
+      setListProducts(response.allProducts);
+      setNumberPage(response.numberPage);
     }
-  }
+  };
 
   return (
-    <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', margin: 2}}>
-      <Grid container spacing={2} sx={{padding: 2}}>
-        {listProducts?.map(product =>  <Grid item xs={2}>
-          <ProductCard product = {product}/>
-        </Grid>)}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        margin: 2,
+      }}
+    >
+      <Typography
+        variant="h1"
+        sx={{ fontSize: 30, margin: 5 }}
+        className="truncate-text"
+      >
+        {"Danh sách sản phẩm"}
+      </Typography>
+      <Grid container spacing={2} sx={{ padding: 2 }}>
+        {listProducts?.map((product) => (
+          <Grid item xs={2}>
+            <ProductCard product={product} />
+          </Grid>
+        ))}
       </Grid>
-      <Pagination count={numberPage} page={page} onChange={handleChangePagination} />
+      <Pagination
+        count={numberPage}
+        page={page}
+        onChange={handleChangePagination}
+      />
     </Box>
-  )
+  );
 };
 
 export default Products;
